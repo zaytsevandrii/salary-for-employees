@@ -1,8 +1,9 @@
-import React, { useState } from "react"
+import React, { useRef, useState } from "react"
 import "./employeesAddForm.scss"
 
 export default function EmployeesAdd({ addEmployee }) {
     const [name, setText] = useState("")
+    const inputRef = useRef()
     const [salary, setSalary] = useState("")
     const formSubmit = (e) => {
         e.preventDefault()
@@ -12,13 +13,14 @@ export default function EmployeesAdd({ addEmployee }) {
             addEmployee({ name, salary })
             setText("")
             setSalary("")
+            inputRef.current.focus()
         }
     }
     return (
         <div className="app-add-form">
             <h3>Add a new employee</h3>
             <form className="add-form d-flex" onSubmit={formSubmit}>
-                <input
+                <input ref={inputRef}
                     type="text"
                     value={name}
                     onChange={(e) => setText(e.target.value)}

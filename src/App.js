@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.scss';
 import AppInfo from './components/app-info/AppInfo';
 import EmployeesAdd from './components/employees-add-form/EmployeesAdd';
@@ -8,12 +8,25 @@ import SearchPanel from './components/search-panel/SearchPanel';
 function App() {
   const [name,setName] = useState('')
   const [filter,setFilter] = useState('')
-  const [data,setData] = useState([
-    {id:1,name:'John Smith',salary:1600,increase:false},
-    {id:2,name:'Alex Murthy',salary:1800,increase:false},
-    {id:3,name:'Andrii Zaitsev',salary:1900,increase:false},
-  ]
-  )   
+  const [data,setData] = useState(()=>{
+
+  
+    const savedData = localStorage.getItem('employees')
+    if(savedData){
+      return JSON.parse(savedData)
+    }else{
+      return [{id:1,name:'John Smith',salary:1700,increase:false},
+      {id:2,name:'Alex Murthy',salary:1850,increase:false},
+      {id:3,name:'Andrii Zaitsev',salary:2100,increase:false},]
+    }
+ /*    [
+    
+  ] */
+})   
+
+  useEffect(()=>{
+    localStorage.setItem('employees', JSON.stringify(data))
+  },[data])
   const deletePerson=(id)=>{
     setData(data.filter(person=>person.id !== id))
   }
